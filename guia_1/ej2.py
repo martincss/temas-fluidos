@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 from numpy import pi
 import matplotlib.pyplot as plt
@@ -46,8 +47,8 @@ for i in range(len(T)-2):
 
 plt.figure()
 for i in range(len(T)-2):
-	if (i%2 == 0):
-		plt.plot(X, u[i,:], label = 't = {:.2f}'.format(T[i]))
+	plt.plot(X, u[i,:], label = 't = {:.2f}'.format(T[i]))
+	plt.clear()
 plt.grid(True)
 plt.legend()
 plt.show()
