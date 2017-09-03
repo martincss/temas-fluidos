@@ -42,13 +42,23 @@ u = np.zeros((len(T), len(X)))
 
 u[0,:] = np.sin(X)
 
-for i in range(len(T)-2):
+for i in range(len(T)-1):
 	u[i+1,:] = RK2(u[i,:], delta_x, delta_t, nu)
 
-plt.figure()
-for i in range(len(T)-2):
-	plt.plot(X, u[i,:], label = 't = {:.2f}'.format(T[i]))
-	plt.clear()
+fig = plt.figure()
+ax = plt.axes(ylim = (-1, 1))
+for i in range(len(T)-1):
+    ax.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
+    plt.ylim(-1, 1)
+    plt.grid(True)
+    plt.legend()
+    plt.xlabel('$x$', fontsize = 15)
+    plt.ylabel('$u$', fontsize = 15)
+    plt.title('Solución a la ecuación de Burgers')
+    plt.axis('tight')
+    plt.pause(0.1)
+    ax.clear()
+    
 plt.grid(True)
 plt.legend()
 plt.show()
