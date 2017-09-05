@@ -28,12 +28,12 @@ def RK2(x, delta_x, delta_t, nu):
 
 x_min = 0
 x_max = 2*pi
-delta_x = 0.2
+delta_x = 0.1
 X = np.arange(x_min, x_max, delta_x)
 
 t_inicial = 0
-t_final = 5
-delta_t = 0.15
+t_final = 12.03
+delta_t = 0.03
 T = np.arange(t_inicial, t_final, delta_t)
 
 nu = 0.1
@@ -45,22 +45,19 @@ u[0,:] = np.sin(X)
 for i in range(len(T)-1):
 	u[i+1,:] = RK2(u[i,:], delta_x, delta_t, nu)
 
-fig = plt.figure()
-ax = plt.axes(ylim = (-1, 1))
+plt.figure()
 for i in range(len(T)-1):
-    ax.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
-    plt.ylim(-1, 1)
+    plt.clf()
+    plt.xlim([0,2*pi])    
+    plt.ylim([-1,1])
+    plt.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
     plt.grid(True)
     plt.legend()
     plt.xlabel('$x$', fontsize = 15)
     plt.ylabel('$u$', fontsize = 15)
-    plt.title('Solución a la ecuación de Burgers')
-    plt.axis('tight')
-    plt.pause(0.1)
-    ax.clear()
-    
-plt.grid(True)
-plt.legend()
+    plt.title('Solucion a la ecuacion de Burgers')
+    #plt.pause(0.001)
+    plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
 plt.show()
 
 
