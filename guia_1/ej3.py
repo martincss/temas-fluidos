@@ -2,11 +2,11 @@
 import numpy as np
 from numpy import pi
 import matplotlib.pyplot as plt
-from scipy.fftpack import fft
+import scipy.fftpack as fft
 
 def term_adv(uk,k):
-	du_dx = fft.ffti(1i*k*uk)
-	ux = fft.ifft(uk)
+	du_dx = fft.ifft(1j*k*uk, n=len(uk)-1)
+	ux = fft.ifft(uk, n=len(uk)-1)
 	prod = ux*du_dx
 	return fft.fft(prod)
 
@@ -25,7 +25,7 @@ N = 2**12
 x_min = 0
 x_max = 2*pi
 X = np.linspace(x_min, x_max, N)
-delta_x = x[1] - x[0]
+delta_x = X[1] - X[0]
 
 t_inicial = 0
 t_final = 5
@@ -35,16 +35,33 @@ T = np.arange(t_inicial, t_final, delta_t)
 nu = 0.1
 
 u = np.zeros((len(T), len(X)))
-uk = np.zeros((len(T), len(X)))
+uk = np.zeros((len(T), len(X)), dtype = complex)
 
 u[0,:] = np.sin(X)
-u_k[0,:] = fft.fft(u[0,:])
+uk[0,:] = fft.fft(u[0,:])
+uk[0,:] = fft.fftshift(uk[0,:])
 k = 2 * np.pi * fft.fftfreq(N, delta_x)
+k = fft.fftshift(k)
 
-for i in range(len(T)-2):
-	for k in 
-		uk[i+1,:] = RK2(uk[i,:], , delta_t, nu)
- 
+for t in range(len(T)-2):
+    for i in range(len(k)-1): 
+        uk[t+1,i] = RK2(uk[t,i], k[i], delta_t, nu)
+    u[t,:] = fft.ifft(uk[t,:], n=len(k)-1)
+
+plt.figure()
+for i in range(len(T)-1):
+    plt.clf()
+    plt.xlim([0,2*pi])    
+    plt.ylim([-1,1])
+    plt.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
+    plt.grid(True)
+    plt.legend()
+    plt.xlabel('$x$', fontsize = 15)
+    plt.ylabel('$u$', fontsize = 15)
+    plt.title('Solucion a la ecuacion de Burgers')
+    plt.pause(0.001)
+    #plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
+plt.show()
 
 
 
