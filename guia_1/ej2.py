@@ -18,10 +18,17 @@ def CD2(x, delta_x):
 	return diff2
 
 def F(x, delta_x, nu):
+	"""
+	Genera la funcion que da la derivada para Runge-Kutta 
+	"""
 	f = nu*CD2(x,delta_x) - x*(CD(x,delta_x))
 	return f
 
 def RK2(x, delta_x, delta_t, nu):
+	"""
+	Hace la integracion temporal por Runge-Kutta y devuelve la funcion
+	en el tiempo proximo
+	"""
 	x_star = x + delta_t/2 * F(x, delta_x, nu)
 	x_adv = x + delta_t * F(x_star, delta_x, nu)
 	return x_adv 
