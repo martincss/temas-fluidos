@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import scipy.fftpack as fft
 
 def term_adv(uk,k):
-	du_dx = fft.ifft(1j*k*uk, n=len(uk)-1)
-	ux = fft.ifft(uk, n=len(uk)-1)
+	du_dx = fft.ifft(1j*k*uk)
+	ux = fft.ifft(uk)
 	prod = ux*du_dx
 	return fft.fft(prod)
 
@@ -43,10 +43,9 @@ uk[0,:] = fft.fftshift(uk[0,:])
 k = 2 * np.pi * fft.fftfreq(N, delta_x)
 k = fft.fftshift(k)
 
-for t in range(len(T)-2):
-    for i in range(len(k)-1): 
-        uk[t+1,i] = RK2(uk[t,i], k[i], delta_t, nu)
-    u[t,:] = fft.ifft(uk[t,:], n=len(k)-1)
+for t in range(len(T)-2): 
+    uk[t+1,:] = RK2(uk[t,:], k, delta_t, nu)
+    u[t+1,:] = fft.ifft(uk[t,:])
 
 plt.figure()
 for i in range(len(T)-1):
