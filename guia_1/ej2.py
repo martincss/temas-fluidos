@@ -33,38 +33,54 @@ def RK2(x, delta_x, delta_t, nu):
 	x_adv = x + delta_t * F(x_star, delta_x, nu)
 	return x_adv 
 
+#%%
+
 x_min = 0
 x_max = 2*pi
-delta_x = 0.1
+delta_x = 0.05
 X = np.arange(x_min, x_max, delta_x)
 
 t_inicial = 0
 t_final = 12.03
-delta_t = 0.03
+delta_t = 0.001
 T = np.arange(t_inicial, t_final, delta_t)
 
-nu = 0.1
+nu_1 = 0.1
+nu_2 = 0.01
+nu_3 = 0.001
 
-u = np.zeros((len(T), len(X)))
+u_1 = np.zeros((len(T), len(X)))
+u_2 = np.zeros((len(T), len(X)))
+u_3 = np.zeros((len(T), len(X)))
 
-u[0,:] = np.sin(X)
+u_1[0,:] = np.sin(X)
+u_2[0,:] = np.sin(X)
+u_3[0,:] = np.sin(X)
+
+#%%
 
 for i in range(len(T)-1):
-	u[i+1,:] = RK2(u[i,:], delta_x, delta_t, nu)
+	u_1[i+1,:] = RK2(u_1[i,:], delta_x, delta_t, nu_1)
+	u_2[i+1,:] = RK2(u_2[i,:], delta_x, delta_t, nu_2)
+	u_3[i+1,:] = RK2(u_3[i,:], delta_x, delta_t, nu_3)
+
+#%%
 
 plt.figure()
-for i in range(len(T)-1):
+for i in range(0, len(T)-1, 10):
     plt.clf()
     plt.xlim([0,2*pi])    
     plt.ylim([-1,1])
-    plt.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
+    plt.plot(X, u_1[i,:], 'b', label = '$\\nu = 0.1$'+' t = {:.2f}'.format(T[i]))
+    plt.plot(X, u_2[i,:], 'g', label = '$\\nu = 0.01$'+' t = {:.2f}'.format(T[i]))
+    plt.plot(X, u_3[i,:], 'r', label = '$\\nu = 0.001$'+' t = {:.2f}'.format(T[i]))
     plt.grid(True)
     plt.legend()
     plt.xlabel('$x$', fontsize = 15)
     plt.ylabel('$u$', fontsize = 15)
     plt.title('Solucion a la ecuacion de Burgers')
-    #plt.pause(0.001)
-    plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
+    plt.pause(0.001)
+    #plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
 plt.show()
 
 
