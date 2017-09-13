@@ -5,7 +5,7 @@ Temas avanzados de dinámica de fluidos, 2c 2017
 Guía 1
 
 Programa para la solución numérica de la ecuación de Burgers por diferencias
-finitas (ejercicios 2,4)
+finitas (ejercicios 2, 4, 5)
 """
 import numpy as np
 from numpy import pi
@@ -89,8 +89,8 @@ for i in range(0, len(T)-1, 10):
     plt.xlim([0,2*pi])    
     plt.ylim([-1,1])
     plt.plot(X, u_1[i,:], 'b', label = '$\\nu = 0.1$'+' t = {:.2f}'.format(T[i]))
-    plt.plot(X, u_2[i,:], 'g', label = '$\\nu = 0.01$'+' t = {:.2f}'.format(T[i]))
-    plt.plot(X, u_3[i,:], 'r', label = '$\\nu = 0.001$'+' t = {:.2f}'.format(T[i]))
+    #plt.plot(X, u_2[i,:], 'g', label = '$\\nu = 0.01$'+' t = {:.2f}'.format(T[i]))
+    #plt.plot(X, u_3[i,:], 'r', label = '$\\nu = 0.001$'+' t = {:.2f}'.format(T[i]))
     plt.grid(True)
     plt.legend()
     plt.xlabel('$x$', fontsize = 15)
@@ -101,5 +101,33 @@ for i in range(0, len(T)-1, 10):
 plt.show()
 
 
+#%% Calcula derivada respecto a x mediante diferencias centradas [EJ. 5]
+################################################################    
 
+w_1 = np.zeros((len(T), len(X)))
+w_2 = np.zeros((len(T), len(X)))
+w_3 = np.zeros((len(T), len(X)))
 
+for i in range(len(T)-1):
+	w_1[i,:] = CD(u_1[i,:], delta_x)
+	w_2[i,:] = CD(u_2[i,:], delta_x)
+	w_3[i,:] = CD(u_3[i,:], delta_x)
+
+#%% Genera histogramas de omega 
+###############################
+
+plt.figure()
+for i in range(0, 2000, 20):
+    plt.clf()
+    #plt.plot(X, w_1[i,:], color = 'b', label = '$\\nu = 0.1$'+' t = {:.2f}'.format(T[i]))
+    plt.hist(w_1[i,:], color = 'b', alpha = 0.2, label = '$\\nu = 0.1$'+' t = {:.2f}'.format(T[i]))
+    #plt.hist(w_2[i,:], color = 'g', alpha = 0.2, label = '$\\nu = 0.01$'+' t = {:.2f}'.format(T[i]))
+    #plt.hist(w_3[i,:], color = 'r', alpha = 0.2, label = '$\\nu = 0.001$'+' t = {:.2f}'.format(T[i]))
+    plt.title('Histograma de $\\omega = \\partial_x u$', fontsize = 20)
+    plt.xlabel('$\\omega$', fontsize = 15)
+    plt.ylabel('Cantidad puntos espaciales', fontsize = 15)
+    plt.grid(True)
+    plt.legend()
+    plt.pause(0.001)
+    #plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
+plt.show()
