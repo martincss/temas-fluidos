@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+"""
+Martín Carusso, Florencia Lazzari
+Temas avanzados de dinámica de fluidos, 2c 2017
+Guía 1
+
+Programa para la solución numérica de la ecuación de Burgers por diferencias
+finitas (ejercicios 2,4)
+"""
 import numpy as np
 from numpy import pi
 import matplotlib.pyplot as plt
@@ -33,8 +41,8 @@ def RK2(x, delta_x, delta_t, nu):
 	x_adv = x + delta_t * F(x_star, delta_x, nu)
 	return x_adv 
 
-#%%
-
+#%% Inicializamos discretización espacial y temporal
+####################################################
 x_min = 0
 x_max = 2*pi
 delta_x = 0.05
@@ -53,18 +61,27 @@ u_1 = np.zeros((len(T), len(X)))
 u_2 = np.zeros((len(T), len(X)))
 u_3 = np.zeros((len(T), len(X)))
 
+#condiciones iniciales
 u_1[0,:] = np.sin(X)
 u_2[0,:] = np.sin(X)
 u_3[0,:] = np.sin(X)
 
-#%%
+#%% Integración temporal por Runge-Kutta de orden 2
+####################################################
 
 for i in range(len(T)-1):
 	u_1[i+1,:] = RK2(u_1[i,:], delta_x, delta_t, nu_1)
 	u_2[i+1,:] = RK2(u_2[i,:], delta_x, delta_t, nu_2)
 	u_3[i+1,:] = RK2(u_3[i,:], delta_x, delta_t, nu_3)
 
-#%%
+#%% Graficamos las soluciones 
+####################################################
+"""
+El último argumento del range cambia cada cuántas iteraciones temporales se
+actualiza el gráfico. El plt.pause() permite graficar "en tiempo real". Para
+guardar las frames, comentar plt.pause y descomentar la línea con plt.savefig
+indicando un path acorde.
+"""
 
 plt.figure()
 for i in range(0, len(T)-1, 10):
