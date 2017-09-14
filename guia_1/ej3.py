@@ -104,20 +104,89 @@ guardar las frames, comentar plt.pause y descomentar la línea con plt.savefig
 indicando un path acorde.
 """
 
-plt.figure()
-for i in range(0, len(T)-1, 10):
-    plt.clf()
-    plt.xlim([0,2*pi])    
-    plt.ylim([-1,1])
-    plt.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
-    plt.grid(True)
-    plt.legend()
-    plt.xlabel('$x$', fontsize = 15)
-    plt.ylabel('$u$', fontsize = 15)
-    plt.title('Solucion a la ecuacion de Burgers')
-    plt.pause(0.001)
-    #plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
+#plt.figure()
+#for i in range(0, len(T)-1, 10):
+#    plt.clf()
+#    plt.xlim([0,2*pi])    
+#    plt.ylim([-1,1])
+#    plt.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
+#    plt.grid(True)
+#    plt.legend()
+#    plt.xlabel('$x$', fontsize = 15)
+#    plt.ylabel('$u$', fontsize = 15)
+#    plt.title('Solucion a la ecuacion de Burgers')
+#    plt.pause(0.001)
+#    #plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
+#plt.show()
+
+# E = u**2 / 2 = energia cinetica
+
+# E = np.zeros(len(T))
+# for i in range(len(T)):
+# 	for j in range(len(X)):
+# 		E_x = u[i,j]**2 / 2
+# 		E[i] += E_x
+
+t =100
+Ek = np.zeros(len(uk[t,:]))
+for i in range(len(uk[t,:])):
+	Ek[i] = (np.real(uk[t,i]))**2 / 2
+
+Ek = fft.fftshift(Ek)
+k = fft.fftshift(k)
+
+plt.plot(Ek, 'b', label = 't = {:.2f}'.format(T[t]))
+plt.grid(True)
+plt.legend()
+plt.xlabel('$k$', fontsize = 15)
+plt.ylabel('$E$', fontsize = 15)
+plt.title('Energia en funcion de k para $\\nu$ = {:.2f}'.format(nu))
 plt.show()
+
+
+# plt.figure()
+# for i in range(len(T)-1):
+#     plt.clf()
+#     plt.xlim([0,2*pi])
+#     plt.ylim([-1,1])
+#     plt.plot(X, u[i,:], 'b', label = 't = {:.2f}'.format(T[i]))
+#     plt.grid(True)
+#     plt.legend()
+#     plt.xlabel('$x$', fontsize = 15)
+#     plt.ylabel('$u$', fontsize = 15)
+#     plt.title('Solucion a la ecuacion de Burgers')
+#     plt.pause(0.001)
+#     #plt.savefig('/home/florlazz/Desktop/temas-fluidos/guia_1/frames_ej2/frame_{:03d}.png'.format(i))
+# plt.show()
+
+
+# print len(T)
+# f, (ax1, ax2, ax3, ax4) = plt.subplots(4, sharex=True, sharey=True)
+# plt.xlim([0,2*pi])
+# plt.ylim([-1,1])
+# ax1.plot(X, u[0,:], 'b', label = 't = {:.2f}'.format(T[0]))
+# ax1.set_title('Solucion a la ecuacion de Burgers para $\\nu$ = 0.001')
+# ax1.grid(True)
+# ax1.legend()
+# ax2.plot(X, u[40,:], 'b', label = 't = {:.2f}'.format(T[40]))
+# ax2.grid(True)
+# ax2.legend()
+# ax2.set_ylabel('$u$', fontsize = 17)
+# ax3.plot(X, u[100,:], 'b', label = 't = {:.2f}'.format(T[100]))
+# ax3.grid(True)
+# ax3.legend()
+# ax4.plot(X, u[180,:], 'b', label = 't = {:.2f}'.format(T[180]))
+# ax4.grid(True)
+# ax4.legend()
+# ax4.set_xlabel('$x$', fontsize = 17)
+# # Fine-tune figure; make subplots close to each other and hide x ticks for
+# # all but bottom plot.
+# f.subplots_adjust(hspace=0)
+# plt.setp([a.get_xticklabels() for a in f.axes[:-1]], visible=False)
+# plt.legend()
+# plt.show()
+
+
 
 
 
