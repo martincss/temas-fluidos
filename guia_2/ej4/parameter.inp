@@ -1,7 +1,7 @@
 ! General configuration flags
 &status
 idir = "./"
-odir = "/home/usuario/Desktop/temas-fluidos/guia_2/ej4/N_10"
+odir = "/home/flor/Documents/facultad/Fluidos/temas-fluidos/guia_2/ej4/N_10/"
 stat = 0         ! last binary file if restarting an old run
 mult = 1         ! decreases the time step
 bench = 0        ! benchmark mode if 1

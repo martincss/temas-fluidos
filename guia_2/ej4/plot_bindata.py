@@ -10,7 +10,7 @@ path = './N_10/'
 # Spatial resolution
 NX = 128
 NY = 128
-NZ = 128
+NZ = 64
 shape = (NX,NY,NZ)
 
 # Reads binary files
@@ -23,13 +23,14 @@ shape = (NX,NY,NZ)
 # plt.ylabel('y')
 # plt.show()
 plt.figure()
-for i in range(1,12):
-    th = np.fromfile(path+'th.{:04d}.out'.format(i),dtype=np.float32).reshape(shape,order='F')
+for i in range(1,9):
+    vx = np.fromfile(path+'vz.{:04d}.out'.format(i),dtype=np.float32).reshape(shape,order='F')
     plt.clf()
     plt.title('i = {:}'.format(i))
-    plt.imshow(th[:,NY//2,:], cmap = 'jet', vmin = -15, vmax = 15)
+    plt.imshow(vx[:,NY//2,:], cmap = 'jet')#, vmin = , vmax = )
     plt.xlabel('x')
     plt.ylabel('y')
     plt.colorbar()
     plt.pause(1)
+    print(np.max(vx))
 plt.show()
