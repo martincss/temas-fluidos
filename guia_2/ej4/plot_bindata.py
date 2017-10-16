@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
@@ -33,7 +34,7 @@ plt.show()
 #%% plot de temp(x)
 
 plt.figure()
-for i in range(1,2):
+for i in range(11,12):
     field = np.fromfile(path+'th.{:04d}.out'.format(i),dtype=np.float32).reshape(shape,order='F')
     plt.clf()
     plt.title('i = {:}'.format(i))
@@ -47,12 +48,15 @@ for i in range(1,2):
 #%% Fitteo
 x_fit = x[:20]
 temp_fit = field[:20, NY//2, NZ//2]
-f = lambda x, A, lon, ph: A*np.sin(lon*x+ph)
+temp_fit /= np.mean(np.abs(temp_fit))
+f = lambda x, A, lon, ph: A*np.sin(2*np.pi/lon*x+ph)
 
-popt, _ = curve_fit(f, x_fit, temp_fit)
+p_guess = [1.5, 0.8, -0.2]
+popt, _ = curve_fit(f, x_fit, temp_fit, p0 = p_guess)
 fit = f(x_fit, *popt)
 
+plt.figure()
 plt.plot(x_fit, fit, 'r')
-plt.plot(x_fit, temp_fit, 'b')
+plt.scatter(x_fit, temp_fit, color = 'b')
 plt.show()
 
