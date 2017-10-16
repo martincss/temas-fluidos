@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Oct 13 17:30:11 2017
+Martín Carusso, Florencia Lazzari
+Temas avanzados de dinámica de fluidos, 2c 2017
+Guía 2
 
-@author: martin
+Programa para la determinacion de la longitud de ondas de sotavento en función
+de la frecuencia de Brunt-Väisälä a partir de soluciones a las ecuaciones
+de Boussinesq (ejercicio 4b)
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -45,7 +49,8 @@ def fit_sin(tt, yy):
 # Path a los directorios de cada BV
 path = './N_{:d}/'
 BVs = [1, 3, 5, 7, 10, 12, 15] # cuando estén todas cambiar por un range o enum
-iters = 20
+samples = 11                   # cantidad de samples para un N particular
+longs = []                     # lista a contener las longitudes de onda
 
 # Spatial resolution
 NX = 128
@@ -55,22 +60,58 @@ shape = (NX,NY,NZ)
 x = np.linspace(0, 2*np.pi, NX)
 delta_x = 2*np.pi/NX
 
-field = np.fromfile(path+'th.{:04d}.out'.format(i),dtype=np.float32).reshape(shape,order='F')
+
+#%% Fitteo para determinar lambda para cada N
+"""
+Para cada N, del directorio correspondiente toma el .out de la última iteración
+en la cual se ve la onda ya formada. Toma el primer período de la onda y 
+ajusta por un seno, en base a las estimaciones de los parámetros según la 
+función fit_sin. Regista la longitud de onda a una lista.
+"""
+
+for N in BVs:
+    field = np.fromfile(path.format(N) + 'th.{:04d}.out'.format(samples),
+                        dtype=np.float32).reshape(shape,order='F')
+    field = field[:, NY//2, NZ//2] # fijo Y,Z a la mitad del recinto
+    # para el fit, me quedo sólo con un periodo de la señal (no me queda 
+    # claro por qué funciona con *3 en lugar de *2)                                                         
+    period = abs(np.argmax(field) - np.argmin(field))*3 
+    # Si el periodo es más grande que el tamaño de la señal, tomo el más chico
+    samp_fit = np.min([len(field), period])
+    x_fit = x[:samp_fit]
+    temp_fit = field[:samp_fit]
+    # Normalizo la señal a la unidad, para mejorar el fit sobre la longitud 
+    # de onda. Comentar la línea si se quiere la amplitud de verdad
+    temp_fit /= abs(np.max(temp_fit) - np.min(temp_fit))*0.5
+    res = fit_sin(x_fit, temp_fit)
+    longs.append(res['period'])
+    
+    #Grafica el período de la señal con su fit, para verificar
+    plt.plot(x_fit, temp_fit, 'r')
+    plt.plot(x_fit, res['fitfunc'](x_fit), 'b')
+
+#%% Plotteo de los resultados finales
+
+N = np.array(BVs)
+longs = np.array(longs)
+plt.figure()
+plt.plot(N, longs, 'g')
+plt.title('Longitud de la onda estacionaria en función de N')
+plt.xlabel('Frecuencia de Brunt-Väisälä')
+plt.ylabel('Longitud de onda')
+plt.grid(True)
 
 
-#%% Fitteo
-x_fit = x[:20]
-temp_fit = field[:20, NY//2, NZ//2]
-temp_fit /= np.mean(temp_fit)
-f = lambda x, A, lon, ph: A*np.sin(2*np.pi/lon*x+ph)
 
-p_guess = [4, 0.7, -0.2]
-popt, _ = curve_fit(f, x_fit, temp_fit, p0 = p_guess)
-fit = f(x_fit, *popt)
 
-plt.plot(x_fit, fit, 'r')
-plt.plot(x_fit, temp_fit, 'b')
-plt.show()
+
+
+
+
+
+
+
+
 
 
 
