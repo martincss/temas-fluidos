@@ -48,7 +48,7 @@ def fit_sin(tt, yy):
 
 # Path a los directorios de cada BV
 path = './N_{:d}/'
-BVs = [1, 3, 5, 7, 10, 12, 15] # cuando estén todas cambiar por un range o enum
+BVs = range(1,16) # cuando estén todas cambiar por un range o enum
 samples = 11                   # cantidad de samples para un N particular
 longs = []                     # lista a contener las longitudes de onda
 
@@ -94,19 +94,30 @@ for N in BVs:
 
 N = np.array(BVs)
 longs = np.array(longs)
+
+# Ajustamos los datos por una lineal en escala loglog
+logN = np.log(N)
+loglam = np.log(longs)
+linear = lambda x, m, b: m*x + b
+p0_linear = [-1, 1]
+popt, pcov = curve_fit(linear, logN, loglam, p0_linear)
+fit_linear = linear(logN, *popt)
+
 plt.figure()
-plt.plot(N, longs, 'g')
+plt.scatter(logN, loglam, color = 'b')
+plt.plot(logN, fit_linear, 'r')
+plt.grid(True)
+plt.show()
+
+
+plt.figure()
+plt.plot(N, np.exp(fit_linear), 'g')
+plt.scatter(N, longs, color = 'r')
 plt.title('Longitud de la onda estacionaria en función de N')
 plt.xlabel('Frecuencia de Brunt-Väisälä')
 plt.ylabel('Longitud de onda')
 plt.grid(True)
-
-
-
-
-
-
-
+plt.show()
 
 
 
