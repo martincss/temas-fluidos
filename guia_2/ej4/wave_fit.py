@@ -47,7 +47,8 @@ def fit_sin(tt, yy):
 #%% Preliminares para los archivos binarios
 
 # Path a los directorios de cada BV
-path = './N_{:d}/'
+#path = './N_{:d}/'
+path = '/media/martinc/USB DISK/datos fluidos ej4/N_{:d}/'
 BVs = range(1,16) # cuando estén todas cambiar por un range o enum
 samples = 11                   # cantidad de samples para un N particular
 longs = []                     # lista a contener las longitudes de onda
@@ -101,23 +102,29 @@ loglam = np.log(longs)
 linear = lambda x, m, b: m*x + b
 p0_linear = [-1, 1]
 popt, pcov = curve_fit(linear, logN, loglam, p0_linear)
-fit_linear = linear(logN, *popt)
+logN_plot = np.linspace(np.min(logN), np.max(logN), 100)
+fit_linear = linear(logN_plot, *popt)
 
 plt.figure()
-plt.scatter(logN, loglam, color = 'b')
-plt.plot(logN, fit_linear, 'r')
+plt.scatter(logN, loglam, color = 'b', label = 'Datos')
+plt.plot(logN_plot, fit_linear, 'r', label = 'Ajuste ${:.2f}\log N + {:.2f} $'.format(popt[0], popt[1]))
+plt.title('$\lambda$ vs $N$ en escala logarítmica', fontsize = 20)
+plt.xlabel('$\log N$', fontsize = 15)
+plt.ylabel('$\log \lambda$', fontsize = 15)
 plt.grid(True)
+plt.legend()
 plt.show()
 
 
 plt.figure()
-plt.plot(N, np.exp(fit_linear), 'g')
-plt.scatter(N, longs, color = 'r')
-plt.title('Longitud de la onda estacionaria en función de N')
-plt.xlabel('Frecuencia de Brunt-Väisälä')
-plt.ylabel('Longitud de onda')
+plt.plot(np.exp(logN_plot), np.exp(fit_linear), 'g', label = 'Ajuste')
+plt.scatter(N, longs, color = 'r', label = 'Datos')
+plt.title('Longitud de la onda estacionaria en función de N', fontsize = 20)
+plt.xlabel('Frecuencia de Brunt-Väisälä', fontsize = 15)
+plt.ylabel('Longitud de onda', fontsize = 15)
 plt.grid(True)
-plt.show()
+plt.legend()
+#plt.show()
 
 
 
