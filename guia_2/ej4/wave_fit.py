@@ -47,8 +47,8 @@ def fit_sin(tt, yy):
 #%% Preliminares para los archivos binarios
 
 # Path a los directorios de cada BV
-#path = './N_{:d}/'
-path = '/media/martinc/USB DISK/datos fluidos ej4/N_{:d}/'
+path = './N_{:d}/'
+#path = '/media/martinc/USB DISK/datos fluidos ej4/N_{:d}/'
 BVs = range(1,16) # cuando estén todas cambiar por un range o enum
 samples = 11                   # cantidad de samples para un N particular
 longs = []                     # lista a contener las longitudes de onda
@@ -70,7 +70,7 @@ ajusta por un seno, en base a las estimaciones de los parámetros según la
 función fit_sin. Regista la longitud de onda a una lista.
 """
 
-for N in BVs:
+for N in [5]:#BVs:
     field = np.fromfile(path.format(N) + 'th.{:04d}.out'.format(samples),
                         dtype=np.float32).reshape(shape,order='F')
     field = field[:, NY//2, NZ//2] # fijo Y,Z a la mitad del recinto
@@ -88,8 +88,14 @@ for N in BVs:
     longs.append(res['period'])
     
     #Grafica el período de la señal con su fit, para verificar
-    plt.plot(x_fit, temp_fit, 'r')
-    plt.plot(x_fit, res['fitfunc'](x_fit), 'b')
+#    plt.figure()
+#    plt.plot(x_fit, temp_fit, 'r', label = 'Datos')
+#    plt.plot(x_fit, res['fitfunc'](x_fit), 'b', label = 'Ajuste')
+#    plt.xlabel('Coordenada x', fontsize = 15)
+#    plt.ylabel('Temperatura potencial', fontsize = 15)
+#    plt.title('Corte de la temperatura potencial para $Y = NY/2$, $Z = NZ/2$', fontsize = 20)
+#    plt.legend()
+#    plt.grid(True)
 
 #%% Plotteo de los resultados finales
 
@@ -102,12 +108,21 @@ loglam = np.log(longs)
 linear = lambda x, m, b: m*x + b
 p0_linear = [-1, 1]
 popt, pcov = curve_fit(linear, logN, loglam, p0_linear)
+# Estos de acá sirven para plotear después
 logN_plot = np.linspace(np.min(logN), np.max(logN), 100)
 fit_linear = linear(logN_plot, *popt)
 
+# Abajo obtenemos el r2 del ajuste lineal
+ss_res = np.sum((loglam - linear(logN, *popt))**2)
+ss_tot = np.sum((loglam - np.mean(loglam))**2)
+r2 = 1 - (ss_res / ss_tot)
+
+# Graficamos los ajustes
+
 plt.figure()
 plt.scatter(logN, loglam, color = 'b', label = 'Datos')
-plt.plot(logN_plot, fit_linear, 'r', label = 'Ajuste ${:.2f}\log N + {:.2f} $'.format(popt[0], popt[1]))
+plt.plot(logN_plot, fit_linear, 'r', label = 'Ajuste con $r^2 = {:.3f} $'.format(r2))
+plt.text(1.5, 1.0, '$y = {:.2f}x + {:.2f} $'.format(popt[0], popt[1]), fontsize = 15)
 plt.title('$\lambda$ vs $N$ en escala logarítmica', fontsize = 20)
 plt.xlabel('$\log N$', fontsize = 15)
 plt.ylabel('$\log \lambda$', fontsize = 15)
