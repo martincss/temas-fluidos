@@ -1,7 +1,7 @@
 ! General configuration flags
 &status
 idir = "./"
-odir = "/home/usuario/Desktop/temas-fluidos/guia_2/ej3/omega_20"
+odir = "/home/usuario/Desktop/temas-fluidos/guia_2/ej3/omega_125"
 stat = 0         ! last binary file if restarting an old run
 mult = 1         ! decreases the time step
 bench = 0        ! benchmark mode if 1
@@ -50,7 +50,7 @@ mu = 2.e-3       ! magnetic diffusivity
 corr = 0         ! correlation between the fields/forcings
 mparam0 = 0.90   ! mparam0-9 can be used to control the forcing
 aparam0 = 0.10   ! idem for the initial magnetic field
-/ 
+/
 
 ! Parameters for the Boussinesq solvers (BOUSS, ROTBOUSS solvers)
 &boussinesq
@@ -68,7 +68,7 @@ skup = 2.00      ! maximum wavenumber
 kappa = 2.e-3    ! diffusivity
 sparam0 = 0.90   ! cparam0-9 can be used to control the source
 cparam0 = 0.10   ! idem for the initial concentration
-/ 
+/
 
 ! Configuration flags for runs with a passive/active scalar
 &inject
@@ -98,7 +98,7 @@ gspe = 1         ! computes generalized helicity if 1
 &rotation
 omegax = 0.00    ! uniform rotation in x
 omegay = 0.00    ! uniform rotation in y
-omegaz = 20.00   ! uniform rotation in z
+omegaz = 1.25   ! uniform rotation in z
 /
 
 ! Parameters for compressible runs (COMPHD, CMHD and CMHDB solvers)
