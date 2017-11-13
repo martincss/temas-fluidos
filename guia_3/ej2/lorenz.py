@@ -11,6 +11,7 @@ Programa para la solución numérica del sistema Lorenz 63
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import ode
+from mpl_toolkits.mplot3d import Axes3D
 
 #%% Definimos funciones para la integración
 
@@ -73,6 +74,12 @@ w = solver.integrate(t1)
 def Lorenz(solver):
     pass
 
+tiempos = np.linspace(t0, t1, 100)
+sol = np.zeros((len(tiempos), 3))
 
+ax3 = Axes3D(plt.figure())
 
+for i in range(len(tiempos)):
+    sol[i, :] = solver.integrate(tiempos[i])
+ax3.plot(sol[:,0], sol[:,1], sol[:,2])    
  
