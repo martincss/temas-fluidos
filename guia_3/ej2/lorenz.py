@@ -66,18 +66,6 @@ lento, pero a nuestros efectos no es tan relevante como poder elegir la
 densidad de puntos.
 """
 
-# meter el sigma, b y r
-sigma = 10 
-r = 30
-b = 8/3
-params = [sigma, r, b]
-
-t0 = 0 # inicial
-t1 = 50 # final, parece que con este solver no hay que poner el paso
-W_0 = np.array([0, 0.5, 0.5])
-
-
-
 def Lorenz(solver, params, W_0, tiempos):
     """
     Dado el solver para F, la lista de parámetros (sigma, r, b), la condición 
@@ -94,10 +82,205 @@ def Lorenz(solver, params, W_0, tiempos):
     for i in range(len(tiempos)):
         sol[i, :] = solver.integrate(tiempos[i])
     return sol
-   
+
+#%% COMUN A TODOS LOS ITEMS
+
+t0 = 0 # inicial
+t1 = 50 # final
+W_0 = np.array([0, 0.5, 0.5])
+
 tiempos = np.linspace(t0, t1, 10000)
-sol = Lorenz(solver, params, W_0, tiempos)
+
+
+#%%~~~~~~~~~~~~~~~~~~ ITEM a) ~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# meter el sigma, b y r
+sigma = 10 
+r_a = 2
+b = 8/3
+params_a = [sigma, r_a, b]
+
+sol_a = Lorenz(solver, params_a, W_0, tiempos)
+
+plt.figure()
+plt.subplot(2,1,1)
+plt.plot(tiempos, sol_a[:,1])
+#plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_a), fontsize = 15)
+plt.grid(True)
+
+plt.subplot(2,1,2)
+plt.plot(tiempos, sol_a[:,2])
+plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+#plt.title('Integración de Lorenz con $r = {:d}$'.format(r), fontsize = 15)
+plt.grid(True)
+
+plt.figure()
+plt.plot(sol_a[:,0], sol_a[:,2])
+plt.xlabel('Coordenada $Y$', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_a), fontsize = 15)
+plt.grid(True)
 
 ax3 = Axes3D(plt.figure())
-ax3.plot(sol[:,0], sol[:,1], sol[:,2])    
- 
+ax3.plot(sol_a[:,0], sol_a[:,1], sol_a[:,2])
+plt.xlabel('Coordenada $X$', fontsize = 15)    
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+ax3.set_zlabel('Coordenada $Z$', fontsize = 15)
+ax3.set_title('Integración de Lorenz con $r = {:d}$'.format(r_a), fontsize = 15)
+
+#%%~~~~~~~~~~~~~~~~~~ ITEM b_1) ~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# meter el sigma, b y r
+sigma = 10 
+r_b1 = 10
+b = 8/3
+params_b1 = [sigma, r_b1, b]
+
+sol_b1 = Lorenz(solver, params_b1, W_0, tiempos)
+
+plt.figure()
+plt.subplot(2,1,1)
+plt.plot(tiempos, sol_b1[:,1])
+#plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b1), fontsize = 15)
+plt.grid(True)
+
+plt.subplot(2,1,2)
+plt.plot(tiempos, sol_b1[:,2])
+plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+#plt.title('Integración de Lorenz con $r = {:d}$'.format(r), fontsize = 15)
+plt.grid(True)
+
+plt.figure()
+plt.plot(sol_b1[:,0], sol_b1[:,2])
+plt.xlabel('Coordenada $Y$', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b1), fontsize = 15)
+plt.grid(True)
+
+ax3 = Axes3D(plt.figure())
+ax3.plot(sol_b1[:,0], sol_b1[:,1], sol_b1[:,2])
+plt.xlabel('Coordenada $X$', fontsize = 15)    
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+ax3.set_zlabel('Coordenada $Z$', fontsize = 15)
+ax3.set_title('Integración de Lorenz con $r = {:d}$'.format(r_b1), fontsize = 15)
+
+
+#%%~~~~~~~~~~~~~~~~~~ ITEM b_2) ~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# meter el sigma, b y r
+sigma = 10 
+r_b2 = 24
+b = 8/3
+params_b2 = [sigma, r_b2, b]
+
+sol_b2 = Lorenz(solver, params_b2, W_0, tiempos)
+
+plt.figure()
+plt.subplot(2,1,1)
+plt.plot(tiempos, sol_b2[:,1])
+#plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b2), fontsize = 15)
+plt.grid(True)
+
+plt.subplot(2,1,2)
+plt.plot(tiempos, sol_b2[:,2])
+plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+#plt.title('Integración de Lorenz con $r = {:d}$'.format(r), fontsize = 15)
+plt.grid(True)
+
+plt.figure()
+plt.plot(sol_b2[:,0], sol_b2[:,2])
+plt.xlabel('Coordenada $Y$', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b2), fontsize = 15)
+plt.grid(True)
+
+ax3 = Axes3D(plt.figure())
+ax3.plot(sol_b2[:,0], sol_b2[:,1], sol_b2[:,2])
+plt.xlabel('Coordenada $X$', fontsize = 15)    
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+ax3.set_zlabel('Coordenada $Z$', fontsize = 15)
+ax3.set_title('Integración de Lorenz con $r = {:d}$'.format(r_b2), fontsize = 15)
+
+
+#%%~~~~~~~~~~~~~~~~~~ ITEM c) ~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# meter el sigma, b y r
+sigma = 10 
+r_b = 25
+b = 8/3
+params_c = [sigma, r_b, b]
+
+sol_c = Lorenz(solver, params_c, W_0, tiempos)
+
+plt.figure()
+plt.subplot(2,1,1)
+plt.plot(tiempos, sol_c[:,1])
+#plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b), fontsize = 15)
+plt.grid(True)
+
+plt.subplot(2,1,2)
+plt.plot(tiempos, sol_c[:,2])
+plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+#plt.title('Integración de Lorenz con $r = {:d}$'.format(r), fontsize = 15)
+plt.grid(True)
+
+plt.figure()
+plt.plot(sol_c[:,0], sol_c[:,2])
+plt.xlabel('Coordenada $Y$', fontsize = 15)
+plt.ylabel('Coordenada $Z$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b), fontsize = 15)
+plt.grid(True)
+
+ax3 = Axes3D(plt.figure())
+ax3.plot(sol_c[:,0], sol_c[:,1], sol_c[:,2])
+plt.xlabel('Coordenada $X$', fontsize = 15)    
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+ax3.set_zlabel('Coordenada $Z$', fontsize = 15)
+ax3.set_title('Integración de Lorenz con $r = {:d}$'.format(r_b), fontsize = 15)
+
+
+
+#%%~~~~~~~~~~~~~~~~~~ ITEM d) ~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# meter el sigma, b y r
+sigma = 10 
+r_b = 30
+b = 8/3
+params_d = [sigma, r_b, b]
+
+sol_d = Lorenz(solver, params_d, W_0, tiempos)
+
+W_0d = np.array([0, 0.5, 0.50001])
+sol_dd = Lorenz(solver, params_d, W_0d, tiempos)
+
+
+plt.figure()
+plt.plot(tiempos, sol_d[:,1], label = '$z_0 = 0.5$')
+plt.plot(tiempos, sol_dd[:,1], label = '$z_0 = 0.50001$')
+plt.xlabel('Tiempo', fontsize = 15)
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b), fontsize = 15)
+plt.grid(True)
+
+
+
+
+
+
