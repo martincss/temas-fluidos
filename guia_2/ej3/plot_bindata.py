@@ -66,7 +66,7 @@ for j in range(len(omega)):
         centro_menos[i,0], centro_menos[i,1], centro_menos[i,2] = center_of_mass(h_menos)
 
         # para cada tiempo quiero un valor de derivada_vx_dz
-        derivada_vx_dz = (np.roll(vx,-1,0) - np.roll(vx,1,0)) / 2*delta_z
+        derivada_vx_dz = (np.roll(vx,-1,2) - np.roll(vx,1,2)) / 2*delta_z
         derivada_media[j,i] = np.mean(abs(derivada_vx_dz))
 
     vel_centro_mas = (np.roll(centro_mas[1:,2],-1,0) - np.roll(centro_mas[1:,2],1,0)) / 2*delta_t_sampleo
@@ -89,10 +89,13 @@ for j in range(len(omega)):
 
 
 plt.clf()
-plt.title(r'Velocidad de $h$ en funcion de $\Omega$', fontsize='15')
-plt.plot(omega/100., vel_media_centro_mas, 'x', omega/100., vel_media_centro_menos, 'x')
-plt.xlabel(r'$\Omega$', fontsize='15')
-plt.ylabel(r'$V_h$', fontsize='15')
+plt.title(r'Velocidad media de $h$ en funcion de $\Omega$', fontsize='15')
+plt.plot(omega/100., vel_media_centro_mas, 'x', label='h>0')
+plt.plot(omega/100., vel_media_centro_menos, 'x', label='h<0')
+plt.xlabel(r'$\Omega$', fontsize='20')
+plt.ylabel(r'$V_h$', fontsize='20')
+plt.legend()
+plt.grid()
 plt.xticks(fontsize='15')
 plt.yticks(fontsize='15')
 plt.show()
@@ -119,14 +122,16 @@ plt.show()
 tiempo = np.arange(iters)*delta_t_sampleo
 
 plt.clf()
+plt.title(r'Valor medio del modulo de la derivada en z de $v_x$ en funcion del tiempo', fontsize=15)
 plt.plot(tiempo[1:], derivada_media[0,1:], label=r'$\Omega$ = {:d}'.format(int(omega[0]/100)))
 plt.plot(tiempo[1:], derivada_media[4,1:], label=r'$\Omega$ = {:d}'.format(int(omega[4]/100)))
 plt.plot(tiempo[1:], derivada_media[8,1:], label=r'$\Omega$ = {:d}'.format(int(omega[8]/100)))
 plt.plot(tiempo[1:], derivada_media[12,1:], label=r'$\Omega$ = {:d}'.format(int(omega[12]/100)))
-plt.plot(tiempo[1:], derivada_media[20,1:], label=r'$\Omega$ = {:d}'.format(int(omega[20]/100)))
+plt.plot(tiempo[1:], derivada_media[16,1:], label=r'$\Omega$ = {:d}'.format(int(omega[16]/100)))
 plt.xlabel('t', fontsize='15')
-plt.ylabel(r'$<|\frac{\partial v_x}{\partial z}|>$', fontsize='15')
+plt.ylabel(r'$\langle|\frac{\partial v_x}{\partial z}|\rangle$', fontsize='20')
 plt.xticks(fontsize='15')
 plt.yticks(fontsize='15')
+plt.grid()
 plt.legend()
 plt.show()
