@@ -278,9 +278,17 @@ plt.xlabel('Tiempo', fontsize = 15)
 plt.ylabel('Coordenada $Y$', fontsize = 15)
 plt.title('Integración de Lorenz con $r = {:d}$'.format(r_b), fontsize = 15)
 plt.grid(True)
+plt.legend()
 
+ax3 = Axes3D(plt.figure())
+ax3.plot(sol_d[:,0], sol_d[:,1], sol_d[:,2], label = '$z_0 = 0.5$', color = 'r')
+ax3.plot(sol_dd[:,0], sol_dd[:,1], sol_dd[:,2], label = '$z_0 = 0.50001$', color = '#00B7EB')
+plt.xlabel('Coordenada $X$', fontsize = 15)    
+plt.ylabel('Coordenada $Y$', fontsize = 15)
+ax3.set_zlabel('Coordenada $Z$', fontsize = 15)
+ax3.set_title('Integración de Lorenz con $r = {:d}$'.format(r_b), fontsize = 15)
+plt.legend()
 
-
-
+    
 
 
