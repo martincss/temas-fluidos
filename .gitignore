@@ -45,4 +45,7 @@
 # ???
 *.swp
 
+# Animation Frames
+guia_3/ej2/frames_lorenz
+
 #bin
