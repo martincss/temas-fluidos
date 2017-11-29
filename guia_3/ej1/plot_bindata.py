@@ -25,8 +25,10 @@ iters = 21
 
 delta_t_sampleo = 0.5
 delta_z = 2*np.pi/NZ
+delta_x = 2*np.pi/NX
 
 z = np.arange(0,2*np.pi, delta_z)
+x = np.arange(0,2*np.pi, delta_x)
 
 # Estudio la evolucion temporal de u, ωy y de la temperatura
 
@@ -37,7 +39,7 @@ rich_min = np.zeros(len(N))
 vel_inest = np.zeros(len(N))
 
 derivada_media = np.zeros((iters, NZ))
-wy_media = np.zeros((iters, NZ))
+wy_media = np.zeros((iters, NX))
 
 index_pos_l =  np.zeros(iters)
 index_pos_r = np.zeros(iters)
@@ -167,8 +169,7 @@ for n in range(len(N)):
 
 
 gamma_array = np.arange(5,21,2)
-long_onda_max = np.zeros(len(gamma_array))
-long_onda_min = np.zeros(len(gamma_array))
+long_onda_media = np.zeros(len(gamma_array))
 
 from scipy.signal import argrelextrema
 
@@ -180,38 +181,26 @@ for g in range(len(gamma_array)):
     path = './N2_gamma{:d}/'.format(int(gamma_array[g]))
     print path
     # estudio unicamente para el ultimo instante de tiempo
-    t = iters-1
+    t = iters - 1
     wy = np.fromfile(path+'wy.{:04d}.out'.format(t+1),dtype=np.float32).reshape(shape,order='F')
-    wy_media[t,:] = np.mean(wy, axis=(0,1))
+    wy_media[t,:] = np.mean(wy, axis=(1,2))
 
-    wy_media_pos = wy_media[t,:]*(wy_media[t,:]>0)
-    wy_media_neg = wy_media[t,:]*(wy_media[t,:]<0)
+    # wy_media_pos = wy_media[t,:]*(wy_media[t,:]>0)
+    # wy_media_neg = wy_media[t,:]*(wy_media[t,:]<0)
 
-    x = argrelextrema(wy_media_pos, np.greater)
-    y = argrelextrema(wy_media_neg, np.less)
-
-    x_new = []
-    y_new = []
-
-    for i in range(len(x[0])):
-        if (wy_media[t,x[0][i]]>0.5):
-            x_new.append(x[0][i])
-
-    for i in range(len(y[0])):
-        if (wy_media[t,y[0][i]]<-0.5):
-            y_new.append(y[0][i])
-
+    X = argrelextrema(wy_media[t,:], np.greater)
+    Y = argrelextrema(wy_media[t,:], np.less)
 
     plt.clf()
     plt.title(r'$\gamma$ = {:}'.format(int(gamma_array[g])), fontsize='20')
-    plt.plot(z[x_new], np.transpose(wy_media[t,x_new]), 'ro')
-    plt.plot(z[y_new], np.transpose(wy_media[t,y_new]), 'bo')
+    plt.plot(x[X], wy_media[t,X[0]], 'ro')
+    plt.plot(x[Y], wy_media[t,Y[0]], 'bo')
     # plt.plot(z[x], np.transpose(wy_media[t,x]), 'ro')
     # plt.plot(z[y], np.transpose(wy_media[t,y]), 'bo')
-    plt.plot(z, wy_media[t, :])
+    plt.plot(x, wy_media[t, :])
     plt.xlim([0,2*np.pi])
     # plt.ylim([-0.03,0.03])
-    plt.xlabel('z', fontsize='30')
+    plt.xlabel('x', fontsize='30')
     plt.ylabel(r'<$\omega_y$>', fontsize='30')
     plt.grid(True)
     plt.xticks(fontsize='20')
@@ -219,15 +208,17 @@ for g in range(len(gamma_array)):
     plt.pause(0.01)
     plt.show()
 
-    cant_max = len(x_new)
-    cant_min = len(y_new)
-    long_onda_max[g] = 8*np.pi / cant_max
-    long_onda_min[g] = 8*np.pi / cant_min
+    cant_max = len(X[0])
+    cant_min = len(Y[0])
+    long_onda_max = 8*np.pi / cant_max
+    long_onda_min = 8*np.pi / cant_min
 
-# en primer lugar grafico solo para la longitud de onda maxima
+    long_onda = [long_onda_min, long_onda_max]
+    long_onda_media[g] = np.mean(long_onda)
+
 plt.clf()
 plt.title('Longitud de Onda del Modo mas Inestable', fontsize='20')
-plt.plot(gamma_array, long_onda_min, 'x')
+plt.plot(gamma_array, long_onda_media, 'bo')
 # plt.ylim([-0.03,0.03])
 plt.xlabel(r'$\gamma$', fontsize='30')
 plt.ylabel(r'$\lambda$', fontsize='30')
