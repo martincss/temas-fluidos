@@ -5,17 +5,17 @@ odir = "/home/usuario/Desktop/temas-fluidos/guia_5/ej1/data"
 stat = 0         ! last binary file if restarting an old run
 mult = 1         ! decreases the time step
 bench = 0        ! benchmark mode if 1
-outs = 0         ! controls the amount of output, si es cero guarda vx vy vz, si es uno guarda ademas las wx wy wz
+outs = 1         ! controls the amount of output, si es cero guarda vx vy vz, si es uno guarda ademas las wx wy wz
 mean = 0         ! computes mean fields if 1
 trans = 1        ! computes energy transfer if 1
 /
 
 ! Parameters for time integration
 &parameter
-dt = 1e-2        ! time step
-step = 2500      ! total number of steps
-tstep = 150      ! number of steps between binary output o la frec sampleo
-sstep = 50       ! number of steps between spectrum output
+dt = 5e-3        ! time step
+step = 5000      ! total number of steps
+tstep = 300      ! number of steps between binary output o la frec sampleo
+sstep = 100      ! number of steps between spectrum output
 cstep = 100      ! number of steps between writing global quantities o la frec sampleo de energia etc
 rand = 2         ! random phases if 1
 cort = 0.5       ! correlation time of the external forcing
@@ -98,7 +98,7 @@ gspe = 1         ! computes generalized helicity if 1
 &rotation
 omegax = 0.00    ! uniform rotation in x
 omegay = 0.00    ! uniform rotation in y
-omegaz = 8.00   ! uniform rotation in z
+omegaz = 8.00    ! uniform rotation in z
 /
 
 ! Parameters for compressible runs (COMPHD, CMHD and CMHDB solvers)
