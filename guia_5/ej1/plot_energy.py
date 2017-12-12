@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # Execute in ipython with '%run plot_energy.py'
 
 # Path to the data
-path = ''
+path = 'data\\'
 
 # Reads balance.txt
 #  t   = time
