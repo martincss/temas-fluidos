@@ -92,6 +92,7 @@ for i in range(index_star, index_max):
     E_para += np.loadtxt(path + file_para.format(i), delimiter = '  ', usecols = (1,))
 E_para /= cant_tiempos
 
+
 # ahora para el perp
 file_perp = 'kspecperp.{:04d}.txt'
 
@@ -102,3 +103,42 @@ for i in range(index_star, index_max):
     E_perp += np.loadtxt(path + file_perp.format(i), delimiter = '  ', usecols = (1,))
 E_perp /= cant_tiempos
 
+
+# y el isótropo
+file_iso = 'kspectrum.{:04d}.txt'
+
+k_iso = np.loadtxt(path + file_iso.format(1), delimiter = '  ', usecols = (0,))
+E_iso = np.zeros(len(k_iso))
+
+for i in range(index_star, index_max):
+    E_iso += np.loadtxt(path + file_iso.format(i), delimiter = '  ', usecols = (1,))
+E_iso /= cant_tiempos
+
+#%% Graficamos todo
+
+plt.figure()
+plt.subplot(1,3,1)
+plt.loglog(k_iso, E_iso, color = 'b')
+plt.xlabel('$k$')
+plt.ylabel('$E(k)$')
+plt.title('Espectro de energía isótropo')
+plt.grid(True)
+plt.legend()
+
+plt.subplot(1,3,2)
+plt.loglog(k_para, E_para, color = 'g')
+plt.xlabel('$k_{\\parallel}$')
+plt.ylabel('$E(k_{\\parallel})$')
+plt.title('Espectro en la dirección paralela')
+plt.grid(True)
+plt.legend()
+
+plt.subplot(1,3,3)
+plt.loglog(k_perp, E_perp, color = 'r')
+plt.xlabel('$k_{\\perp}$')
+plt.ylabel('$E(k_{\\perp})$')
+plt.title('Espectro en la dirección perpendicular')
+plt.grid(True)
+plt.legend()
+
+#plt.tight_layout()
