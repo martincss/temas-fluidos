@@ -15,9 +15,10 @@ matplotlib.rcParams.update({'font.size': 15})
 
 #%% Importamos los datos de balance
 
-path = 'data\\'
-file = 'balance.txt'
-tiempo, energia, enstrofia, epsilon = np.loadtxt(path + file, unpack = True)
+#path = 'data\\'
+path = 'data/'
+file_balance = 'balance.txt'
+tiempo, energia, enstrofia, epsilon = np.loadtxt(path + file_balance, unpack = True)
 #energia = 0.5*energia
 #enstrofia = 0.5*enstrofia
 
@@ -26,14 +27,16 @@ tiempo, energia, enstrofia, epsilon = np.loadtxt(path + file, unpack = True)
 plt.figure()
 plt.subplot(3,1,1)
 plt.plot(tiempo, energia, color = 'r', label = 'Energía $\\langle v^2 \\rangle$')
-plt.xlabel('Tiempo')
-plt.ylabel('Energía')
+#plt.xlabel('Tiempo')
+plt.xticks([0, 5, 10, 15, 20, 25], ()) # para que no me muestre el label en los
+plt.ylabel('Energía')                  # de arriba
 plt.grid(True)
 plt.legend()
 
 plt.subplot(3,1,2)
 plt.plot(tiempo, enstrofia, color = 'b', label = 'Enstrofía $\\langle \\omega^2 \\rangle$')
-plt.xlabel('Tiempo')
+#plt.xlabel('Tiempo')
+plt.xticks([0, 5, 10, 15, 20, 25], ())
 plt.ylabel('Enstrofía')
 plt.grid(True)
 plt.legend()
@@ -70,9 +73,32 @@ plt.legend()
 plt.grid(True)
 
 
+#%%============================================================================
+# ESPECTROS (punto c)
+# =============================================================================
 
+file_para = 'kspecpara.{:04d}.txt'
+# desde el tiempo t* (ver el índice) promediamos los datos del espectro
+index_star = 18
+index_max = 50
+cant_tiempos = index_max - index_star
 
+k_para = np.loadtxt(path + file_para.format(1), delimiter = '  ', usecols = (0,))
+E_para = np.zeros(len(k_para))
 
+# desde el t* hasta el final, sumo todos los E(k) y después divido por cantidad
+# de tiempos, así obtengo el promedio
+for i in range(index_star, index_max):
+    E_para += np.loadtxt(path + file_para.format(i), delimiter = '  ', usecols = (1,))
+E_para /= cant_tiempos
 
+# ahora para el perp
+file_perp = 'kspecperp.{:04d}.txt'
 
+k_perp = np.loadtxt(path + file_perp.format(1), delimiter = '  ', usecols = (0,))
+E_perp = np.zeros(len(k_perp))
+
+for i in range(index_star, index_max):
+    E_perp += np.loadtxt(path + file_perp.format(i), delimiter = '  ', usecols = (1,))
+E_perp /= cant_tiempos
 
