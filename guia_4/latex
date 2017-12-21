@@ -1,0 +1,61 @@
+Por otro lado, el n\'umero de onda m\'aximo resuelto por la
+simulaci\'on es $128/3 \sim 43$. Vemos que este n\'umero es menor
+que $k_{eta}$. Sin embargo, observando la forma del gr\'afico,
+vemos que son pocos los valores para los cuales la enstrof\'ia es
+cercana a la m\'axima, dado que el pico es muy pronunciado.
+
+Se grafic\'o el espectro de energ\'ia durante el m\'aximo de
+enstrof\'ia. Para esto se promediaron 5 espectros correspondientes
+a los tiempos m\'as cercanos al tiempo de m\'axima enstrof\'ia.
+El resultado se encuentra en la figura \ref{fig:espectro_energia},
+donde se ve que el espectro de energ\'ia es comparable con una
+ley de potencias $k^{-5/3}$ en el rango inercial.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{espectro_energia.png}
+\caption{Espectro de enrg\'ia cin\'etica comparado con una
+ley de potencias $k^{-5/3}$ en el rango inercial.}
+\label{fig:espectro_energia}
+\end{figure}
+
+Luego se utilizaron los datos de la funci\'on transferencia $T(k)$
+para calcular el flujo de energ\'ia $\Pi(K) = \sum_{k=o}^K T(k)$.
+En la figura $\ref{fig:transferencia}$ se muestra el promedio de
+5 funciones transferencia correspondientes a tiempos pr\'oximos
+al m\'aximo de enstrof\'ia. Y en la figura \ref{flujo_energia} se
+grafic\'o el flujo de energ\'ia en funci\'on de $K$. El flujo
+tiene signo positivo, lo cual significa que la energ\'ia est\'a
+yendo hacia escalas m\'as pequeñas.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{transferencia.png}
+\caption{.}
+\label{fig:transferencia}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{flujo_energia.png}
+\caption{.}
+\label{fig:flujo_energia}
+\end{figure}
+
+Adem\'as se grafic\'o la energ\'ia cin\'etica en funci\'on del
+tiempo. En la figura \ref{energia_t} se presenta la comparaci\'on
+entre $E(t)$ y una ley de potencias $t^{-2}$ seg\'un lo obtenido
+en la seccion \ref{??????????????}. Vemos que no sigue
+estrictamente esta ley pero se acerca a ella.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.4\textwidth]{energia_t.png}
+\caption{Energ\'ia cin\'etica en funci\'on del tiempo comparada
+con una ley de potencias $t^{-2}$.}
+\label{fig:energia_t}
+\end{figure}
+
+Finalemente se calucul\'o la funci\'on de estructura de segundo
+orden $S_2(r) = <[v_x(x+r\hat{x})-v_x(x)]^2>$, donde el valor
+medio es espacial sobre la coordenada $x$.

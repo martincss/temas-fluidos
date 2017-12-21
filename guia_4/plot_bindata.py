@@ -91,7 +91,7 @@ plt.ylabel('E', fontsize='30')
 plt.grid(True)
 plt.loglog(k, E_prom, label= 'Energia(k)')
 plt.loglog(k[1:13], kolmogorov[1:13], label= r'$k^{-5/3}$')
-plt.legend()
+plt.legend(fontsize= '20')
 plt.xticks(fontsize='20')
 plt.yticks(fontsize='20')
 plt.show()
@@ -154,7 +154,49 @@ plt.grid(True)
 plt.loglog(tiempo, v2/2, label= 'Energia(t)')
 plt.loglog(tiempo[32:],tiempo2[32:], label=r'$t^{-2}$')
 plt.xlim([0,np.max(tiempo)])
-plt.legend()
+plt.legend(fontsize= '20')
+plt.xticks(fontsize='20')
+plt.yticks(fontsize='20')
+plt.show()
+
+# calculo la funcion de estructura de segundo orden en
+# un instante cercano al maximo de entrofia
+
+Nx = 128
+Ny = 128
+Nz = 128
+shape = (Nx,Ny,Nz)
+Lx = 2*np.pi
+t_enstrofia = round(tiempo[t])
+
+dt = 7.0e-3
+tstep = 200
+dt_sampleo = dt * tstep
+iteracion = int(round(t_enstrofia/dt_sampleo))
+
+# Path to the binary data
+path = './ej4/'
+vx = np.fromfile(path+'vx.{:04d}.out'.format(iteracion),dtype=np.float32).reshape(shape,order='F')
+
+s2 = np.zeros(Nx/2)
+vector_r = np.arange(64)
+
+
+for r in vector_r:
+    resta2 = (np.roll(vx, -r, axis=0) - vx)**2
+    s2[r] = np.mean(resta2)
+
+dx = Lx/128
+vector_r_plot = vector_r * dx
+r2 = vector_r_plot**2
+
+plt.clf()
+plt.title('Funcion de Estructura de Segundo Orden', fontsize='30')
+plt.xlabel('r', fontsize='30')
+plt.ylabel(r'$S_{2}$', fontsize='30')
+plt.grid(True)
+plt.loglog(vector_r_plot, s2)
+plt.loglog(vector_r_plot[:20],r2[:20], label=r'$r^{-2}$')
 plt.xticks(fontsize='20')
 plt.yticks(fontsize='20')
 plt.show()
