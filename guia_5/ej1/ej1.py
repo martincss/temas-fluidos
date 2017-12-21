@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.rcParams.update({'font.size': 15})
+from scipy.integrate import simps
 
 #%% Importamos los datos de balance
 
@@ -142,3 +143,60 @@ plt.grid(True)
 plt.legend()
 
 #plt.tight_layout()
+
+
+# =============================================================================
+#%% LONGITUDES INTEGRALES (punto d)
+# =============================================================================
+
+def long_int(k, spectr, E_tot):
+    '''
+    Dada la k, y el espectro, teniendo la energía total, calcula la longitud
+    integral correspondiente. Esta dada por L = 2pi int E(K)/k dk / E_tot
+    '''
+    integ = simps(spectr/k, x=k)
+    L = 2*np.pi*integ/E_tot
+    
+    return L
+    
+L_iso = np.zeros(len(tiempo))
+L_para = np.zeros(len(tiempo))    
+L_perp = np.zeros(len(tiempo))    
+    
+for i in range(2, len(tiempo)+1):
+    E_iso = np.loadtxt(path + file_iso.format(i), delimiter = '  ', usecols = (1,))    
+    E_tot = simps(E_iso, x=k_iso)
+    
+    E_para = np.loadtxt(path + file_para.format(i), delimiter = '  ', usecols = (1,))
+    E_perp = np.loadtxt(path + file_perp.format(i), delimiter = '  ', usecols = (1,))
+    
+    L_iso[i-1] = long_int(k_iso, E_iso, E_tot)
+    L_para[i-1] = long_int(k_para[1:], E_para[1:], E_tot)
+    L_perp[i-1] = long_int(k_perp[1:], E_perp[1:], E_tot)
+
+#%% Graficamos esto
+    
+plt.figure()
+plt.plot(tiempo[1:], L_iso[1:], color = 'b', label = '$L_{iso}$')
+plt.plot(tiempo[1:], L_para[1:], color = 'g', label = '$L_{\\parallel}$')
+plt.plot(tiempo[1:], L_perp[1:], color = 'r', label = '$L_{\\perp}$')
+plt.xlabel('Tiempo')
+plt.ylabel('Longitud integral')
+plt.title('Longitudes integrales isótropa, paralela y perpendicular')
+plt.grid(True)
+plt.legend()
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
