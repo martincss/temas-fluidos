@@ -187,9 +187,28 @@ plt.grid(True)
 plt.legend()
     
     
+#==============================================================================
+#%% CORTE DE OMEGA_Z EN EL PLANO X-Z (punto f) 
+#==============================================================================
     
-    
-    
+Nx = 192
+Ny = 192
+Nz = 48
+shape = (Nx,Ny,Nz)
+tiempo_wz = 12
+wz = np.fromfile(path+'wz.{:04d}.out'.format(tiempo_wz),dtype=np.float32).reshape(shape,order='F')
+
+plt.clf()
+plt.title('Vorticidad $\\omega_z$ tiempo t = {:.1f}'.format(tiempo_wz*25/17), fontsize='20')
+plt.imshow(np.transpose(wz[:,Ny//2,:]), cmap = 'hot', vmin = -1.2, vmax = 2.0, origin = 'lower')
+plt.xlabel('x', fontsize='20')
+plt.ylabel('z', fontsize='20')
+plt.xticks(fontsize='20')
+plt.yticks(fontsize='20')
+cb = plt.colorbar()
+cb.ax.tick_params(labelsize=20)
+plt.pause(0.01)
+plt.show()
     
     
     
